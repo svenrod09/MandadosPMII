@@ -26,7 +26,7 @@ const Tienda =db.define(
             allowNull: false,
         },
         activo:{
-            type: sequelize.TINYINT,
+            type: sequelize.BOOLEAN,
             allowNull: false,
         },
         imagen:{
@@ -39,4 +39,4 @@ const Tienda =db.define(
         timestamps: false,
     }
 );
-module.exports(Tienda);
+module.exports= Tienda;
