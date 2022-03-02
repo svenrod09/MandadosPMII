@@ -1,6 +1,5 @@
 const { validationResult } = require("express-validator");
 const ModeloTienda= require('../modelos/modeloTienda');
-const msj= require('../componentes/mensaje');
 exports.listarTiendas = async (req, res) =>{
     const listaTiendas = await ModeloTienda.findAll();
     if(!listaTiendas){
