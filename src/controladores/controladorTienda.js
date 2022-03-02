@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
-const ModeloTienda= require('../modelos/modeloTienda')
+const ModeloTienda= require('../modelos/modeloTienda');
+const msj= require('../componentes/mensaje');
 exports.listarTiendas = async (req, res) =>{
     const listaTiendas = await ModeloTienda.findAll();
     if(!listaTiendas){
@@ -13,51 +14,41 @@ exports.guardar = async (req, res) =>{
     const validacion = validationResult(req);
     if(!validacion.isEmpty()){
         console.log(validacion.array());
-        res.send("Errores en los datos enviados");
+        res.send("Error en los datos enviados.");
     }
     else{
         const { nombre, telefono, direccion, categoria, activo, imagen } = req.body;
-        if(!nombre || !telefono || !direccion || !categoria || !activo || !imagen){
-            res.send("Debe enviar todos los datos obligatorios.");
-        }
-        else{
-            await ModeloTienda.create({
-                nombreTienda: nombre,
-                telefono: telefono,
-                direccion: direccion,
-                idCategoria: categoria,
-                activo: activo,
-                imagen: imagen,
-            })
-            .then((data)=>{
-                console.log(data);
-                res.send("Registro almacenado en la base de datos.");
-            }).catch((error)=>{
-                console.log(error);
-                res.send("Error al guardar el registro en la base de datos.");
-            });
-        }
+        await ModeloTienda.create({
+            nombreTienda: nombre,
+            telefono: telefono,
+            direccion: direccion,
+            idCategoria: categoria,
+            activo: activo,
+            imagen: imagen,
+        })
+        .then((data)=>{
+            console.log(data);
+            res.send("Registro almacenado en la base de datos.");
+        }).catch((error)=>{
+            console.log(error);
+            res.send("Error al guardar el registro en la base de datos.");
+        });
     }
 };
 exports.modificar = async (req, res) =>{
     const validacion = validationResult(req);
     if(!validacion.isEmpty()){
         console.log(validacion.array());
-        res.send("Errores en los datos enviados");
+        res.send("Error en los datos enviados.");
     }
     else{
         const {id}=req.query;
         const { nombre, telefono, direccion, categoria, activo, imagen}=req.body;
-        if(!id || !nombre || !telefono || !direccion || !categoria || !activo || !imagen){
-            res.send("Debe enviar todos los datos obligatorios.");
-        }
-        else{
-            var buscarTienda = await ModeloTienda.findOne({
-                where:{
-                    idTienda: id
-                }
-            });
-        }
+        var buscarTienda = await ModeloTienda.findOne({
+            where:{
+                idTienda: id
+            }
+        });
         if(!buscarTienda){
             res.send("El id de la tienda no existe.");
         }
@@ -78,8 +69,6 @@ exports.modificar = async (req, res) =>{
                 res.send("Error al actualizar registro de la tienda.");
             });
         }
-        console.log(buscarTienda);
-        res.send("Tienda actualizada.");
     }
 };
 exports.eliminar = async (req, res) =>{
@@ -90,16 +79,11 @@ exports.eliminar = async (req, res) =>{
     }
     else{
         const {id}=req.query;
-        if(!id){
-            res.send("Debe enviar los datos obligatorios.");
-        }
-        else{
-            var buscarTienda = await ModeloTienda.findOne({
-                where:{
-                    idTienda: id
-                }
-            });
-        }
+        var buscarTienda = await ModeloTienda.findOne({
+            where:{
+                idTienda: id
+            }
+        });
         if(!buscarTienda){
             res.send("El id de la tienda no existe.");
         }
@@ -115,7 +99,5 @@ exports.eliminar = async (req, res) =>{
                 res.send("Error al desactivar registro de la tienda.");
             });
         }
-        console.log(buscarTienda);
-        res.send("Tienda desactivada.");
     }
 };
