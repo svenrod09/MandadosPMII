@@ -6,6 +6,7 @@ app.use(express.urlencoded({extended:false}))
 app.use(express.json());
 app.set('json space',2);
 app.use('/api/Tiendas/', require('./rutas/rutasTienda'));
+app.use('/api/Usuarios/', require('./rutas/rutasUsuario'));
 app.use('/api/Productos/',require('./rutas/rutasProducto'));
 app.use('/api/Categorias/',require('./rutas/rutasCategoria'));
 app.listen(8000, ()=>{

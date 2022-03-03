@@ -1,11 +1,10 @@
 {
   "name": "src",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js" 
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +22,15 @@
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "sequelize": "^6.16.3"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svenrod09/MandadosPMII.git"
+  },
+  "bugs": {
+    "url": "https://github.com/svenrod09/MandadosPMII/issues"
+  },
+  "homepage": "https://github.com/svenrod09/MandadosPMII#readme",
+  "description": ""
 }
