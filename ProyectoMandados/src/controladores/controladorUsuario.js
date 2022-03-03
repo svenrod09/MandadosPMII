@@ -1,6 +1,6 @@
 const modeloUsuario = require('../modelos/modelUsuario');
 const { validationResult } = require('express-validator');
-const { send } = require('express/lib/response');
+
 
 
 exports.inicio = (req, res) => {
@@ -17,36 +17,35 @@ exports.ListarUsuarios = async (req, res) => {
     }
 }
 
-exports.registrarse = async (req, res) => {
-
+exports.registrarse = async (req, res) =>{
     const validacion = validationResult(req);
-    const { correo, contrasena, nombre, apellido, telefono, idtipo } = req.body;
-    if (!validacion.isEmpty()) {
-        res.send("Porfavor revise los datos");
+    const {correo, contrasena, nombre, apellido, telefono, idtipo} = req.body;
+    if(!validacion.isEmpty){
         console.log(validacion.array());
-    } else {
+        res.send("Porfavor revise los datos");
+    }else{
 
-        if (!correo || !contrasena || !nombre || !apellido || !telefono || !idtipo) {
-            res.send("Porfavor llene los campos obligatorios");
-        } else {
-            await modeloUsuario.create({
-                correo: correo,
-                contrasena: contrasena,
-                nombre: nombre,
-                apellido: apellido,
-                telefono: telefono,
-                idtipo: idtipo
-            })
-                .then((data) => {
-                    console.log(data.contrasena);
-                    res.send("Se ha registrado exitosamente");
-                })
-                .catch((error) => {
-                    console.log(error);
-                    res.send("Error al registrarse")
-                });
-        }
+    if(!correo || !contrasena || !nombre || !apellido || !telefono || !idtipo){
+        res.send("Porfavor llene los datos obligatorios");
+    }else{
+        await modeloUsuario.create({
+            correo,
+            contrasena,
+            nombre,
+            apellido,
+            telefono,
+            idtipo
+        })
+        .then((data) => {
+            console.log(data.contrasena);
+            res.send("Registro exitoso");
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send("Error al registrarse")
+        });
     }
+    } 
 }
 
 exports.modificarContraseña = async (req, res) => {

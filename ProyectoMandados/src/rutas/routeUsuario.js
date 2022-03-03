@@ -21,11 +21,15 @@ query('id').isInt().withMessage("Debe ingresar el id del usuario"),
 body('contrasena').isLength({min: 6}).withMessage("Debe contener como mínimo 6 caracteres"), controladorAutenticacion.validarAutenticado ,
 controlador.modificarContraseña);
 
+
 route.post('/deshabilitar', 
 body('correo').isEmail().withMessage("Debe ecribir una dirección de correo válida."),
 controladorAutenticacion.validarAutenticado,
 controlador.deshabilitar);
 
 route.get('/error', controladorAutenticacion.ErrorAutenticacion);
+
+
+
 
 module.exports = route;
