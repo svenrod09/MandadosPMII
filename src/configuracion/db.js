@@ -2,7 +2,7 @@ const sequelize = require('sequelize');
 const db = new sequelize(
     'mandados',//nombre de la base de datos
     'root',//usuario de la base de datos
-    'Svalrome09',//contraseña de la base de datos
+    'admin123',//contraseña de la base de datos
     {
         host: 'localhost',//servidor
         dialect: 'mysql',
