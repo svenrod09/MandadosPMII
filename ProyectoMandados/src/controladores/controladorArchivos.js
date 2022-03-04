@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const mensaje = require('../componente/mensajes');
 const ModeloTienda = require('../modelos/modeloTienda');
+
 
 exports.Recibir = async (req, res) => {
     const { filename } = req.file;
@@ -29,7 +31,7 @@ exports.Recibir = async (req, res) => {
                 }
             }
         } catch (error) {
-            console.log(error);
+            mensaje("Error", 200, [data], res);
         }
         BuscarTienda.imagen = filename;
         await BuscarTienda.save()
@@ -41,3 +43,6 @@ exports.Recibir = async (req, res) => {
         });
     }
 };
+
+
+

@@ -15,5 +15,6 @@ const upload = multer({
     storage: storage,
 });
 const router = Router();
-router.post('/imgTienda', upload.single('img'), controladorArchivos.Recibir);
+
+router.post('/img', upload.single('img'), controladorArchivos.Recibir);
 module.exports= router;
