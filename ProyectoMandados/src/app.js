@@ -14,7 +14,9 @@ app.set('json spaces', 2);
 
 app.use('/api/autenticacion/', require('./rutas/rutaAutenticacion'))
 app.use('/api/usuarios/', require('./rutas/routeUsuario'));
-app.use('/api/pedido', require('./rutas/rutaPedido'))
+app.use('/api/pedido', require('./rutas/rutaPedido'));
+app.use('/api/tienda/', require('./rutas/rutasTienda')); 
+
 app.listen(5000, ()=>{
     console.log('Servidor iniciado en el puerto 5000');
 })
