@@ -19,6 +19,7 @@ app.use('/api/pedido', require('./rutas/rutaPedido'));
 app.use('/api/tienda/', require('./rutas/rutasTienda')); 
 app.use('/api/archivos/', require('./rutas/rutasArchivos'));
 app.use('/api/detalle/', require('./rutas/rutasDetalle'));
+app.use('/api/productos/', require('./rutas/rutasProductos'));
 
 app.listen(5000, ()=>{
     console.log('Servidor iniciado en el puerto 5000');
