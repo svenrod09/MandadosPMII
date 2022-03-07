@@ -4,7 +4,7 @@ exports.recuperacionContrasena = async (data) =>{
         from: process.env.correo_app,
         to: data.correo,
         subject: "Recuperación de Contraseña",
-        text: "Pin:" + data.pin,
+        text: "Pin:  " + data.pin,
     };
 
     const transportar = nodemailer.createTransport({

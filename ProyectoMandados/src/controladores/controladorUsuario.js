@@ -91,20 +91,20 @@ exports.modificarContraseña = async (req, res) => {
 
 
 exports.deshabilitar = async (req, res) => {
-    const { correo } = req.body;
+    const { id } = req.query;
     const validacion = validationResult(req);
 
     if (!validacion.isEmpty()) {
         res.send("Porfavor revise los datos");
         console.log(validacion.array());
     } else {
-        if (!correo) {
+        if (!id) {
             res.send("Debe enviar los datos obligatorios");
         }
         else {
             const buscarUsuario = await modeloUsuario.findOne({
                 where: {
-                    correo: correo,
+                    id: id,
                     activo: true
                 }
             })

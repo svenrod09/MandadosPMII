@@ -59,7 +59,7 @@ exports.recuperarCotrasena = async (req, res) => {
                 }
             });
 
-            var pinAleatoreo = Math.random(6);
+            var pinAleatoreo = Math.round(Math.random()* 1E6);
 
             const data = {
                 correo: correo,
