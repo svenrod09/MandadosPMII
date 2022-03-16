@@ -19,7 +19,7 @@ exports.Recibir = async (req, res) => {
         try{
             const buscarImagen = fs.existsSync(path.join(__dirname, '../public/imgP/'+ BuscarProducto.imagen));
             if(!buscarImagen){
-                console.log('La imagen no existe');
+                console.log('La imagen no existe'); 
             }
             else{
                 try {

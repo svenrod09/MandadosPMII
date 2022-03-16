@@ -8,5 +8,6 @@ const bd = new sequelize(
         dialect: 'mysql',
         port: '3306',
     }
+    
 );
 module.exports = bd;
