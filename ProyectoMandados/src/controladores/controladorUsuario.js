@@ -1,6 +1,6 @@
 const modeloUsuario = require('../modelos/modelUsuario');
 const { validationResult } = require('express-validator');
-
+const  msj  = require("../componente/mensajes");
 
 
 exports.inicio = (req, res) => {
@@ -19,30 +19,29 @@ exports.ListarUsuarios = async (req, res) => {
 
 exports.registrarse = async (req, res) =>{
     const validacion = validationResult(req);
-    const {correo, contrasena, nombre, apellido, telefono, idtipo} = req.body;
+    const {correo, contrasena, nombre, apellido, telefono} = req.body;
     if(!validacion.isEmpty){
         console.log(validacion.array());
-        res.send("Porfavor revise los datos");
+        msj("Porfavor revise los datos", 200, array.validacion() , res);
     }else{
 
-    if(!correo || !contrasena || !nombre || !apellido || !telefono || !idtipo){
-        res.send("Porfavor llene los datos obligatorios");
+    if(!correo || !contrasena || !nombre || !apellido || !telefono ){
+        msj("Los datos ingresados No son Válidos", 200, [] , res);
     }else{
         await modeloUsuario.create({
-            correo,
-            contrasena,
-            nombre,
-            apellido,
-            telefono,
-            idtipo
+            correo: correo,
+            contrasena: contrasena,
+            nombre: nombre,
+            apellido: apellido,
+            telefono: telefono,  
         })
         .then((data) => {
             console.log(data.contrasena);
-            res.send("Registro exitoso");
+            msj("Usuario Registrado", 200, [] , res);
         })
         .catch((error) => {
             console.log(error);
-            res.send("Error al registrarse")
+            msj("Ha ocurrido un error al registrarse", 200, [] , res);
         });
     }
     } 

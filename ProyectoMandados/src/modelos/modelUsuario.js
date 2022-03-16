@@ -32,7 +32,8 @@ const Usuario = db.define(
         },
         idtipo:{
             type: sequelize.INTEGER,
-            allowNull: false
+            allowNull: true, 
+            defaultValue: 1
         },
         activo:{
             type: sequelize.BOOLEAN,

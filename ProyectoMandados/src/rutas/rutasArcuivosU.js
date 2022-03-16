@@ -1,5 +1,6 @@
 const { Router } =require('express');
 const controladorArchivos = require('../controladores/controladorArchivosU');
+const controladorAutenticacion = require('../controladores/controladosAutenticacion')
 const multer = require('multer');
 const path = require('path');
 const storage = multer.diskStorage({
@@ -16,5 +17,5 @@ const upload = multer({
 });
 const router = Router();
 
-router.post('/imgU', upload.single('imgU'), controladorArchivos.Recibir);
+router.post('/imgU', controladorAutenticacion.validarAutenticado ,upload.single('imgU'), controladorArchivos.Recibir);
 module.exports= router;
