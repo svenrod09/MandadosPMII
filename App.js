@@ -1,23 +1,52 @@
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StartScreen } from './src/screens/StartScreen';
-import { CategoryScreen } from './src/screens/CategoryScreen';
-import { RestaurantScreen } from './src/screens/RestaurantScreen';
-import { MenuScreen } from './src/screens/MenuScreen';
+import React from 'react'
+import { Provider } from 'react-native-paper'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { theme } from './src/core/theme'
+import {
+  StartScreen,
+  LoginScreen,
+  RegisterScreen,
+  ResetPasswordScreen,
+  TiendasScreen,
+  Dashboard,
+  MenuScreen,
+  FarmaciaScreen,
+  ConvenienciaScreen,
+  PedidosScreen,
+  CategoryScreen,
+  ProductDetailScreen
+} from './src/screens'
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator()
 
 export default function App() {
   return (
-    <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="StartScreen" component={StartScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="CategoryScreen" component={CategoryScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="RestaurantScreen" component={RestaurantScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="MenuScreen" component={MenuScreen} options={{ headerShown: false }} />
+    <Provider theme={theme}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="StartScreen"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="StartScreen" component={StartScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          <Stack.Screen name="TiendasScreen" component={TiendasScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="MenuScreen" component={MenuScreen} />
+          <Stack.Screen name="FarmaciaScreen" component={FarmaciaScreen} />
+          <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
+          <Stack.Screen name="ConvenienciaScreen" component={ConvenienciaScreen} />
+          <Stack.Screen name="PedidosScreen" component={PedidosScreen} />
+          <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} />
+          <Stack.Screen name="Dashboard" component={Dashboard} />
+          <Stack.Screen
+            name="ResetPasswordScreen"
+            component={ResetPasswordScreen} 
+          />
         </Stack.Navigator>
       </NavigationContainer>
-  );
+    </Provider>
+  )
 }
-
