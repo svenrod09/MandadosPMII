@@ -2,7 +2,8 @@ const { validationResult } = require("express-validator");
 const ModeloDetalle= require('../modelos/modeloDetallePedido');
 exports.listarDetalle = async (req,res) => {
     const listaDetalles = await ModeloDetalle.findAll();
-    if(!listaDetalles){
+
+    if(!listaDetalles.lefth == 0){
         res.send("No existe ningún detalle de pedido en la base de datos.");
     }
     else{

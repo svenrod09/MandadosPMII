@@ -1,12 +1,13 @@
 const sequelize = require('sequelize');
-const db = new sequelize(
-    'mandados',//nombre de la base de datos
-    'root',//usuario de la base de datos
-    'admin123',//contraseña de la base de datos
+const bd = new sequelize(
+    'mandados',
+    'root',
+    'admin123',
     {
-        host: 'localhost',//servidor
+        host:'localhost',
         dialect: 'mysql',
         port: '3306',
-    } 
+    }
+    
 );
-module.exports = db;
+module.exports = bd;

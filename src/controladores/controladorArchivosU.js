@@ -1,30 +1,30 @@
 const fs = require('fs');
 const path = require('path');
 const mensaje = require('../componente/mensajes');
-const ModeloTienda = require('../modelos/modeloTienda');
+const modeloUsuario = require('../modelos/modelUsuario');
 
 
 exports.Recibir = async (req, res) => {
     const { filename } = req.file;
     const { id } = req.query;
     console.log(id);
-    var BuscarTienda = await ModeloTienda.findOne({
+    var BuscarUsuario = await modeloUsuario.findOne({
         where:{
-            idTienda: id
+            id: id
         }
     });
-    if(!BuscarTienda){
-        res.send('La tienda no existe.');
+    if(!BuscarUsuario){
+        res.send('El usuaio no existe.');
     }
     else{
         try {
-            const buscarImagen = fs.existsSync(path.join(__dirname , '../public/img/' + BuscarTienda.imagen));
+            const buscarImagen = fs.existsSync(path.join(__dirname , '../public/imgU/' + BuscarUsuario.imagen));
             if(!buscarImagen){
                 console.log('La imagen no existe.');
             }
             else{
                 try {
-                    fs.unlinkSync(path.join(__dirname , '../public/img/' + BuscarTienda.imagen));
+                    fs.unlinkSync(path.join(__dirname , '../public/imgU/' + BuscarUsuario.imagen));
                     console.log('Imagen eliminada');
                 } catch (error) {
                     console.log('Error al eliminar la imagen. ' + error);
@@ -33,8 +33,8 @@ exports.Recibir = async (req, res) => {
         } catch (error) {
             mensaje("Error", 200, [data], res);
         }
-        BuscarTienda.imagen = filename;
-        await BuscarTienda.save()
+        BuscarUsuario.imagen = filename;
+        await BuscarUsuario.save()
         .then((data) => {
             res.send('Archivo almacenado.');
         })
