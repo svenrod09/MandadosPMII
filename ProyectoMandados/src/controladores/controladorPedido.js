@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator');
 
 
 exports.guardarPedido = async (req, res) =>{
-    const {idUsuario, direccion, formapago, codtarjeta, numtarjeta, fechatarjeta } = req.body;
+    const {idUsuario, direccion, formapago, codtarjeta, numtarjeta, fechatarjeta, total } = req.body;
     const validacion = validationResult(req);
 
     if(!validacion.isEmpty){
@@ -16,7 +16,8 @@ exports.guardarPedido = async (req, res) =>{
             formapago: formapago,
             codtarjeta: codtarjeta,
             numtarjeta: numtarjeta,
-            fechatarjeta: fechatarjeta
+            fechatarjeta: fechatarjeta, 
+            total: total
         })
 
         .then((data) => {

@@ -14,6 +14,28 @@ exports.listarproductos = async (req,res)=>{
         res.json(listaProductos);
     }
 };
+
+exports.listarXTiendas = async (req, res) => {
+    const { id } = req.query;
+    if(!id){
+        console.log("Ingrese el id de la tienda");
+        res.send("Ingrese el id de la tienda");
+    }
+    else{
+        var buscarProducto = await ModeloProducto.findAll({
+            where: {
+                idtienda: id
+            }
+        });
+        if (!buscarProducto) {
+            res.send("El id de la tienda no existe.");
+        }
+        else {
+            res.json(buscarProducto);
+        }
+    }
+};
+
 //guardar
 exports.guardar = async (req,res)=>{
     const {nombreProducto , precioProducto,cantidad, estado,imagen,idtienda} = req.body;

@@ -12,6 +12,8 @@ body('correo').isEmail().withMessage("Debe ingresar una direccion de correo vál
 body('contrasena').isLength({min: 6}).withMessage('Debe contener por lo menos 6 caracteres'),
 controlador.inicioSesion);
 
+
+
 route.get('/error', controlador.ErrorAutenticacion);
 
 

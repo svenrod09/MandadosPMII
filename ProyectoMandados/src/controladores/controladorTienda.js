@@ -9,6 +9,29 @@ exports.listarTiendas = async (req, res) =>{
         res.json(listaTiendas);
     }
 };
+
+exports.listarXCategorias = async (req, res) => {
+    const validacion = validationResult(req);
+    if (!validacion.isEmpty()) {
+        console.log(validacion.array());
+        res.send("Error en los datos enviados.");
+    }
+    else {
+        const { id } = req.query;
+        var buscarTienda = await ModeloTienda.findAll({
+            where: {
+                idCategoria: id
+            }
+        });
+    }
+    if (!buscarTienda) {
+        res.send("El id de la categoría no existe.");
+    }
+    else {
+        res.json(buscarTienda);
+    }
+};
+
 exports.guardar = async (req, res) =>{
     const validacion = validationResult(req);
     if(!validacion.isEmpty()){

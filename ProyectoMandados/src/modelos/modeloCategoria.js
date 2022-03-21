@@ -12,6 +12,10 @@ const Categoria =db.define(
         nombre:{
             type: sequelize.STRING(45),
             allowNull: false,
+        },
+        imagen:{
+            type: sequelize.STRING(250),
+            allowNull: true,
         }
     },
     {

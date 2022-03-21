@@ -4,12 +4,13 @@ const { validationResult } = require('express-validator');
 const passport = require('../configuracion/passport');
 const msj = require('../componente/mensajes');
 
+
 exports.inicioSesion = async (req, res) =>{
     const validacion = validationResult(req);
     const { correo, contrasena } = req.body;
 
     if(!validacion.isEmpty()){
-        msj("Los datos ingresados No son Válidos", 200, [] , res);
+        msj("Los datos ingresados No son Válidos", 200, validacion.array() , res);
     }else{
 
         const buscarUsuario = await ModeloUsuario.findOne({
@@ -46,11 +47,11 @@ exports.recuperarCotrasena = async (req, res) => {
 
     const validacion = validationResult(req);
     if (!validacion.isEmpty()) {
-        res.send("Porfavor revise los datos");
+        msj("Revise los datos porfavor", 200, validacion.array(), res)
         console.log(validacion.array());
     } else {
         if (!correo) {
-            res.send("Porfavor llene los datos obligatorios");
+            msj("El usuario no existe", 200, [], res)
         } else {
             const buscarUsuario = await ModeloUsuario.findOne({
                 where: {
@@ -59,16 +60,21 @@ exports.recuperarCotrasena = async (req, res) => {
                 }
             });
 
-            var pinAleatoreo = Math.round(Math.random()* 1E6);
+            const pinAleatoreo = Math.round(Math.random()* 1E6);
 
             const data = {
                 correo: correo,
                 pin: pinAleatoreo
             }
+
             Correo.recuperacionContrasena(data);
-            res.send('Correo Enviado');
+            msj("Correo Enviado", 200, [], res)
+             console.log(data);
+
+
 
         }
     }
 
 }
+

@@ -1,7 +1,7 @@
 const modeloUsuario = require('../modelos/modelUsuario');
 const { validationResult } = require('express-validator');
 const  msj  = require("../componente/mensajes");
-
+const controladorA = require("../controladores/controladosAutenticacion")
 
 exports.inicio = (req, res) => {
     res.send("Inicio Usuarios");
@@ -28,7 +28,16 @@ exports.registrarse = async (req, res) =>{
     if(!correo || !contrasena || !nombre || !apellido || !telefono ){
         msj("Los datos ingresados No son Válidos", 200, [] , res);
     }else{
-        await modeloUsuario.create({
+
+        const buscarUsuario = await modeloUsuario.findOne({
+            where: {
+                correo: correo
+            }
+        })
+        if(buscarUsuario){
+            msj("El usuario ya existe", 200, [], res);
+        }else{
+                  await modeloUsuario.create({
             correo: correo,
             contrasena: contrasena,
             nombre: nombre,
@@ -43,6 +52,8 @@ exports.registrarse = async (req, res) =>{
             console.log(error);
             msj("Ha ocurrido un error al registrarse", 200, [] , res);
         });
+        }
+  
     }
     } 
 }
@@ -50,6 +61,9 @@ exports.registrarse = async (req, res) =>{
 exports.modificarContraseña = async (req, res) => {
     const { id } = req.query;
     const { contrasena } = req.body;
+
+    const data = controladorA.data;
+    console.log(data)
 
     const validacion = validationResult(req);
 
