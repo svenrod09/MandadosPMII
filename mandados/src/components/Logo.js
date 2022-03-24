@@ -1,8 +1,8 @@
 import React from 'react'
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 
 export default function Logo() {
-  return <Image source={require('../assets/logomandados.png')} style={styles.image} />
+  return <Image source={require('../assets/logo1.png')} style={styles.image} />
 }
 
 const styles = StyleSheet.create({
@@ -10,5 +10,6 @@ const styles = StyleSheet.create({
     width: 110,
     height: 110,
     marginBottom: 8,
+    marginTop: 50
   },
 })

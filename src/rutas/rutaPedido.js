@@ -4,10 +4,12 @@ const {body, query} = require('express-validator');
 const controladorAutenticacion = require('../controladores/controladosAutenticacion')
 const route = Rutas();
 
+route.get('/listarXUsuario', query('id').isInt().withMessage('Debe enviar el id del usuario'), 
+controlador.listarPedidoXUsuario);
+
 //GUARDAR PEDIDO
 
-route.post('/guardarPedido', controladorAutenticacion.validarAutenticado,
-body('idUsuario').isInt().withMessage("Debe ingresar el ID del usuario"),
+route.post('/guardarPedido', body('idUsuario').isInt().withMessage("Debe ingresar el ID del usuario"),
 body('direccion').isString().withMessage("Ingrese la dirección"),
 body('formapago').isLength({min: 6}).withMessage("Debe ingresar la forma de pago"),
 controlador.guardarPedido);

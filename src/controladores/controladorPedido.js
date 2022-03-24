@@ -1,10 +1,30 @@
 const modeloPedido = require('../modelos/modeloPedido');
 const { validationResult } = require('express-validator');
 
-
+exports.listarPedidoXUsuario = async (req, res) => {
+    const validacion = validationResult(req);
+    if (!validacion.isEmpty()) {
+        console.log(validacion.array());
+        res.send("Error en los datos enviados.");
+    }
+    else {
+        const { id } = req.query;
+        var buscarPedido = await modeloPedido.findAll({
+            where: {
+                idUsuario: id
+            }
+        });
+    }
+    if (!buscarPedido) {
+        res.send("El id del usuario no existe.");
+    }
+    else {
+        res.json(buscarPedido);
+    }
+}
 
 exports.guardarPedido = async (req, res) =>{
-    const {idUsuario, direccion, formapago, codtarjeta, numtarjeta, fechatarjeta } = req.body;
+    const {idUsuario, direccion, formapago, codtarjeta, numtarjeta, fechatarjeta, total } = req.body;
     const validacion = validationResult(req);
 
     if(!validacion.isEmpty){
@@ -16,7 +36,8 @@ exports.guardarPedido = async (req, res) =>{
             formapago: formapago,
             codtarjeta: codtarjeta,
             numtarjeta: numtarjeta,
-            fechatarjeta: fechatarjeta
+            fechatarjeta: fechatarjeta,
+            total: total
         })
 
         .then((data) => {

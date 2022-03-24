@@ -49,7 +49,12 @@ const Pedidos = db.define(
         numtarjeta: {
             type: sequelize.STRING,
             allowNull: true,
-        }
+        },
+
+        total: {
+            type: sequelize.DECIMAL,
+            allowNull: true,
+        },
     },
 
     {
