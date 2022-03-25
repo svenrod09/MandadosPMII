@@ -1,44 +1,77 @@
-import * as React from 'react';
-import { StyleSheet, View } from 'react-native'
-import { Appbar, Button, Card, Dialog, Title, Paragraph, Text, RadioButton } from 'react-native-paper';
+import React from 'react';
+import { StyleSheet, View, Alert } from 'react-native'
+import { Appbar, Button, Card, Title, Paragraph, Text, RadioButton } from 'react-native-paper';
 import { theme } from '../core/theme'
+import TextInput from '../components/TextInput'
+import { direccionValidator } from '../helpers/direccionValidator'
+import axios from 'axios'
 
-export default function PedidosScreen({ navigation }) {
+const props = {
+    icon: require('../assets/icon.png')
+}
+
+export default function PedidosScreen({ route, navigation }) {
+    const { idproductos, nombreProducto, precioProducto, imagen, cantidad, UserId } = route.params;
+    const [direccion, setDireccion] = React.useState("")
+
     const [value, setValue] = React.useState('Efectivo');
-    const [visible, setVisible] = React.useState(false);
-    const showDialog = () => setVisible(true);
-    const hideDialog = () => setVisible(false);
+
+    const btnPressed = async () => {
+        const direccionError = direccionValidator(direccion.value)
+        if (direccionError) {
+            setDireccion({ ...direccion, error: direccionError })
+
+        }
+        else {
+            axios.post("http://192.168.1.9:5000/api/pedido/guardarPedido", {
+                idUsuario: UserId,
+                direccion: direccion.value,
+                formapago: 'EFECTIVO',
+                total: cantidad * precioProducto + 30
+            })
+                .then((response) => {
+                    Alert.alert("MANDADITOS", "El Pedido ha sido procesado");
+                   /* axios.post("http://192.168.1.9:5000/api/detalle/guardar", {
+                        idpedido: idpedido,
+                        idproducto: idproductos,
+                        cantidad: cantidad
+                    })*/
+                    navigation.navigate("CategoryScreen", {UserId: UserId});
+                });
+        }
+    }
+
     return (
         <><Appbar.Header style={styles.colorPrimary}>
-            <Appbar.BackAction onPress={() => navigation.replace('MenuScreen')} />
-            <Appbar.Action icon={require('../assets/icon.png')} />
-            <Appbar.Content title="Pedido" />
+            <Appbar.BackAction onPress={() => navigation.goBack()} />
+            <Appbar.Action icon={props.icon} />
+            <Appbar.Content title="Detalle de Pedido" />
+            <Appbar.Action icon="format-horizontal-align-left" onPress={() => navigation.replace("StartScreen")} />
         </Appbar.Header>
-            <Card style={styles.container}>
-                <Card.Cover source={{ uri: require('../assets/big-clasic.png') }} />
+            <Card key={idproductos} style={styles.container} >
+                <Card.Cover source={{ uri: 'http://192.168.1.9:5000/producto/imgP/' + imagen }} />
                 <Card.Content>
-                    <Title>Big Classic</Title>
-                    <Paragraph>L.150.00</Paragraph>
+                    <Title>{nombreProducto}</Title>
+                    <Paragraph>Precio: L{precioProducto}</Paragraph>
                 </Card.Content>
             </Card>
             <View style={styles.containerT}>
                 <Title>Pago</Title>
-                <Text>SubTotal: L.150.00</Text>
-                <Text>Total: L.175.00</Text>
+                <Text>Cantidad: {cantidad}</Text>
+                <Text>SubTotal: L{precioProducto * cantidad}</Text>
+                <Text>Total: L{cantidad * precioProducto + 30}</Text>
+                <TextInput
+                    label="Dirección de envío"
+                    value={direccion.value}
+                    onChangeText={(text) => setDireccion({ value: text, error: '' })}
+                    error={!!direccion.error}
+                    errorText={direccion.error}
+                />
                 <RadioButton.Group onValueChange={value => setValue(value)} value={value}>
                     <RadioButton.Item label="Efectivo" value="Efectivo" />
-                    <RadioButton.Item label="Tarjeta" value="Tarjeta" />
-                </RadioButton.Group><Button color={theme.colors.primary} mode="contained" onPress={showDialog}>
+                </RadioButton.Group><Button color={theme.colors.primary} mode="contained" onPress={btnPressed}>
                     Procesar</Button>
-                <Dialog visible={visible} onDismiss={hideDialog}>
-                    <Dialog.Title>Pedido Procesado</Dialog.Title>
-                    <Dialog.Content>
-                        <Paragraph>El pedido ha sido procesado.</Paragraph>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={hideDialog}>Ok</Button>
-                    </Dialog.Actions>
-                </Dialog></View></>
+            </View></>
     );
 }
 

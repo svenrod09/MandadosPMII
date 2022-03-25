@@ -6,6 +6,7 @@ import Header from '../components/Header'
 import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import { emailValidator } from '../helpers/emailValidator'
+import { Alert } from 'react-native'
 
 export default function ResetPasswordScreen({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' })
@@ -25,20 +26,23 @@ export default function ResetPasswordScreen({ navigation }) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          correo: email,
-          
+          correo: email.value,
         })
       });
 
       const json = await respuesta.json();
-      console.log('Petición Procesada');
-    } catch (error) {
+      console.log(json);
+      
 
+      Alert.alert("MANDADITOS", json.msj)
+      navigation.replace('CambiarContrasena');
+   
+    } catch (error) {
+      Alert.alert("MANDADITOS", json.msj)
+      console.log("Ha ocurrido un error ", error);
     }
 
 
-
-    navigation.navigate('LoginScreen')
   }
 
   return (

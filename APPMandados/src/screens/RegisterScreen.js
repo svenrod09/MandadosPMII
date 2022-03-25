@@ -46,11 +46,11 @@ export default function RegisterScreen({ navigation }) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-              correo: email,
-              contrasena: password,
-              nombre: name,
-              apellido: Apellido,
-              telefono: telefono
+              correo: email.value,
+              contrasena: password.value,
+              nombre: name.value,
+              apellido: Apellido.value,
+              telefono: telefono.value
           })
           
         });
@@ -60,6 +60,8 @@ export default function RegisterScreen({ navigation }) {
         const data = json.data;
 
         Alert.alert("MANDADITOS", json.msj);
+
+        navigation.replace('LoginScreen');
   
       } catch (error) {
         Alert.alert("MANDADITOS", "Ha ocurrido un error")

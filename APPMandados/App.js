@@ -14,7 +14,11 @@ import {
   FarmaciaScreen,
   ConvenienciaScreen,
   PedidosScreen,
-  CategoryScreen
+  CategoryScreen,
+  CambiarContrasena,
+  ProductDetailScreen,
+  TiendasScreen,
+  HistorialPedidos
 } from './src/screens'
 
 const Stack = createStackNavigator()
@@ -37,8 +41,12 @@ export default function App() {
           <Stack.Screen name="FarmaciaScreen" component={FarmaciaScreen} />
           <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
           <Stack.Screen name="ConvenienciaScreen" component={ConvenienciaScreen} />
+          <Stack.Screen name="CambiarContrasena" component={CambiarContrasena} />
           <Stack.Screen name="PedidosScreen" component={PedidosScreen} />
+          <Stack.Screen name="HistorialPedidos" component={HistorialPedidos} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
+          <Stack.Screen name="TiendasScreen" component={TiendasScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} />
           <Stack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen} 

@@ -11,100 +11,133 @@ import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const anotherFunc = (val) =>{
+    setEmail('');
+}
+const anotherFunc1 = (val) =>{
+  setPassword('');
+}
 
-  const onLoginPressed = async () =>{
+  const onLoginPressed = async () => {
     const emailError = emailValidator(email.value)
     const passwordError = passwordValidator(password.value)
-    if(!email || !password){
+    if (!email || !password) {
       setEmail({ ...email, error: emailError })
       setPassword({ ...password, error: passwordError })
-    }else{
-       try {
+    } else {
+      try {
         const respuesta = await fetch('http://192.168.1.9:5000/api/autenticacion/iniciosesion', {
           mode: 'no-cors',
           method: 'POST',
-          headers:{
-            'Access-Control-Allow-Headers':'application/json',
-             Accept: 'application/json',
+          headers: {
+            'Access-Control-Allow-Headers': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-              correo: email,
-              contrasena: password
+            correo: email,
+            contrasena: password
           })
         });
         const json = await respuesta.json();
-        console.log(json);
-        const data = json.data;
-       if(!data.token)
-        {
-          
+        console.log(json.data.correo.id)
+
+        if (json.data.lenght == 0) {
+          console.log(json.msj);
+          Alert.alert("MANDADITOS", json.msj);
         }
-        else
-        {
-          const token = data.token;
-          console.log(token);
+        else {
+
+          const cliente = JSON.stringify(json.data);
+          await AsyncStorage.setItem('correo', cliente);
+          const id = json.data.correo.id;
+
+          var datos = JSON.parse(await AsyncStorage.getItem('correo'))
           
+
+          if (!datos.token) {
+            Alert.alert("MANDADITOS", "Usuario o contraseña incorrecta");
+          } else {
+
+           
+           if(id == null){
+
+            Alert.alert("MANDADITOS", "Usuario o contraseña incorrecta");
+
+
+           }else{
+           navigation.navigate("CategoryScreen", { token: datos.token, UserId: id });
+           anotherFunc(email);
+           anotherFunc1(password);
+
+           }
+
+          }
+
         }
 
         Alert.alert("MANDADITOS", json.msj);
-        navigation.navigate("CategoryScreen");
-       
-    } catch (error) {
-      console.log("Ha ocurrido un error ", error);
-    }
+
+
+      } catch (error) {
+        console.log("Ha ocurrido un error ", error);
+        Alert.alert("MANDADITOS", "El Usuario o Contraseña son inválidos")
+      }
     }
 
   }
 
 
+
   return (
     <Background>
-    <BackButton goBack={navigation.goBack} />
-    <Logo />
-    <Header>Bienvenido.</Header>
-    <TextInput
-      placeholder="Correo"
-      returnKeyType="next"
-      value={email}
-      onChangeText={setEmail}
-      error={!!email.error}
-      errorText={email.error}
-      autoCapitalize="none"
-      autoCompleteType="email"
-      textContentType="emailAddress"
-      keyboardType="email-address"
-    />
-    <TextInput
-      label="Contraseña"
-      returnKeyType="done"
-      value={password}
-      onChangeText={setPassword}
-      error={!!password.error}
-      errorText={password.error}
-      secureTextEntry
-    />
-    <View style={styles.forgotPassword}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('ResetPasswordScreen')}
-      >
-        <Text style={styles.forgot}>¿Olvidaste tu Contraseña?</Text>
-      </TouchableOpacity>
-    </View>
-    <Button mode="contained" onPress={onLoginPressed} >
-     iniciar Sesión
-    </Button>
-    <View style={styles.row}>
-      <Text>¿No tienes una cuenta? </Text>
-      <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
-        <Text style={styles.link}>Registrate</Text>
-      </TouchableOpacity>
-    </View>
-  </Background>
+      <BackButton goBack={navigation.goBack} />
+      <Logo />
+      <Header>Bienvenido.</Header>
+      <TextInput
+        placeholder="Correo"
+        returnKeyType="next"
+        value={email}
+        onChangeText={setEmail}
+        error={!!email.error}
+        errorText={email.error}
+        autoCapitalize="none"
+        autoCompleteType="email"
+        textContentType="emailAddress"
+        keyboardType="email-address"
+      />
+      <TextInput
+        label="Contraseña"
+        returnKeyType="done"
+        value={password}
+        onChangeText={setPassword}
+        error={!!password.error}
+        errorText={password.error}
+        secureTextEntry
+      />
+      <View style={styles.forgotPassword}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ResetPasswordScreen')}
+        >
+          <Text style={styles.forgot}>¿Olvidaste tu Contraseña?</Text>
+        </TouchableOpacity>
+      </View>
+      <Button mode="contained" onPress={onLoginPressed} >
+        iniciar Sesión
+      </Button>
+      <View style={styles.row}>
+        <Text>¿No tienes una cuenta? </Text>
+        <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
+          <Text style={styles.link}>Registrate</Text>
+        </TouchableOpacity>
+      </View>
+    </Background>
   )
 }
 
