@@ -8,6 +8,17 @@ const controladorAutenticacion = require('../controladores/controladosAutenticac
 route.get('/', controlador.inicio);
 route.get('/listar', controladorAutenticacion.validarAutenticado , controlador.ListarUsuarios);
 
+//MOSTRAR X USUARIO
+route.get('/listarX', 
+query('id').isInt().withMessage("Debe ingresar un id de usuario válido"),
+controladorAutenticacion.validarAutenticado,
+controlador.listarXUsuario);
+
+//MOSTRAR X CORREO
+route.get('/listarXcorreo', 
+body('correo').isEmail().withMessage("Debe ingresar una dirección de correo válida"),
+controlador.listarXCorreo)
+
 //REGISTRARSE
 route.post('/registrarse', 
 body('correo').isEmail().withMessage("Debe ecribir una dirección de correo válida."),

@@ -1,7 +1,8 @@
 const modeloUsuario = require('../modelos/modelUsuario');
 const { validationResult } = require('express-validator');
 const  msj  = require("../componente/mensajes");
-const controladorA = require("../controladores/controladosAutenticacion")
+const controladorA = require("../controladores/controladosAutenticacion");
+
 
 exports.inicio = (req, res) => {
     res.send("Inicio Usuarios");
@@ -9,12 +10,59 @@ exports.inicio = (req, res) => {
 
 exports.ListarUsuarios = async (req, res) => {
     const listar = await modeloUsuario.findAll();
-    if (listar.lenfth == 0) {
+    if (listar.length == 0) {
         res.send("No existen Usuarios");
     } else {
         res.json(listar)
 
     }
+}
+
+exports.listarXUsuario = async (req, res) =>{
+    const { id } = req.query;
+
+    const validacion = validationResult(req);
+    if(!validacion.isEmpty()){
+        msj("Porfavor revise los datos", 200, array.validacion() , res);
+    }else{
+    const listar = await modeloUsuario.findOne({
+        where: {
+            id: id
+        }
+    });
+
+    if (listar.length == 0) {
+        res.send("No existen Usuarios");
+    } else {
+        res.json(listar)
+
+    }
+    }
+
+}
+
+
+exports.listarXCorreo = async (req, res) =>{
+    const { correo } = req.body;
+
+    const validacion = validationResult(req);
+    if(!validacion.isEmpty()){
+        msj("Porfavor revise los datos", 200, array.validacion() , res);
+    }else{
+    const listar = await modeloUsuario.findOne({
+        where: {
+            correo: correo
+        }
+    });
+
+    if (listar.length == 0) {
+        res.send("No existen Usuarios");
+    } else {
+        res.json(listar)
+
+    }
+    }
+
 }
 
 exports.registrarse = async (req, res) =>{
