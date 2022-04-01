@@ -31,7 +31,7 @@ const Tienda =db.define(
         },
         imagen:{
             type: sequelize.STRING(250),
-            allowNull: false,
+            allowNull: true,
         }
     },
     {

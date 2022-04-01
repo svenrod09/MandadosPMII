@@ -90,7 +90,8 @@ exports.registrarse = async (req, res) =>{
             contrasena: contrasena,
             nombre: nombre,
             apellido: apellido,
-            telefono: telefono,  
+            telefono: telefono,
+            idtipo: 1  
         })
         .then((data) => {
             console.log(data.contrasena);
@@ -105,6 +106,50 @@ exports.registrarse = async (req, res) =>{
     }
     } 
 }
+
+exports.registrarE = async (req, res) =>{
+    const validacion = validationResult(req);
+    const {correo, contrasena, nombre, apellido, telefono, idtipo} = req.body;
+    if(!validacion.isEmpty){
+        console.log(validacion.array());
+        msj("Porfavor revise los datos", 200, array.validacion() , res);
+    }else{
+
+    if(!correo || !contrasena || !nombre || !apellido || !telefono || !idtipo ){
+        msj("Los datos ingresados No son Válidos", 200, [] , res);
+    }else{
+        
+        const buscarUsuario = await modeloUsuario.findOne({
+            where: {
+                correo: correo
+            }
+        })
+        if(buscarUsuario){
+            msj("El usuario ya existe", 200, [], res);
+        }else{
+            await modeloUsuario.create({
+            correo: correo,
+            contrasena: contrasena,
+            nombre: nombre,
+            apellido: apellido,
+            telefono: telefono,
+            idtipo: idtipo
+        })
+        .then((data) => {
+            console.log(data.contrasena);
+            msj("Usuario Registrado", 200, [] , res);
+        })
+        .catch((error) => {
+            console.log(error);
+            msj("Ha ocurrido un error al registrarse", 200, [] , res);
+        });
+        }
+  
+    }
+    } 
+}
+
+
 
 exports.modificarContraseña = async (req, res) => {
     const { id } = req.query;

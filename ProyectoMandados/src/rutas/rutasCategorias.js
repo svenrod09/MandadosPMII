@@ -1,10 +1,10 @@
 const { Router } =require('express');
-const controladorAutenticacion = require('../controladores/controladosAutenticacion');
 const controladorCategoria = require('../controladores/controladorCategoria');
 const router = Router();
 router.get('/', controladorCategoria.inicio);
-router.get('/listar', controladorAutenticacion.validarAutenticado ,controladorCategoria.listarcategoria);
+router.get('/listar', controladorCategoria.listarcategoria);
+router.get('/listarActivas', controladorCategoria.listarcategoriaActivo);
 router.post('/guardar', controladorCategoria.guardar);
 router.put('/modificar', controladorCategoria.modificar);
-router.delete('/eliminar', controladorCategoria.eliminar);
+router.put('/eliminar', controladorCategoria.eliminar);
 module.exports = router;

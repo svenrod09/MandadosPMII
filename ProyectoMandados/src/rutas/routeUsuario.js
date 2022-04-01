@@ -26,6 +26,12 @@ body('contrasena').isLength({min: 6}).withMessage("Debe contener como mínimo 6 
 body('idtipo').isInt().withMessage("Debe ingresar el tipo de Usuario"),
 controlador.registrarse);
 
+route.post('/registrarE', 
+body('correo').isEmail().withMessage("Debe ecribir una dirección de correo válida."),
+body('contrasena').isLength({min: 6}).withMessage("Debe contener como mínimo 6 caracteres"),
+controlador.registrarE);
+
+
 //MODIFICAR
 route.put('/modificar', 
 query('id').isInt().withMessage("Debe ingresar el id del usuario"),
