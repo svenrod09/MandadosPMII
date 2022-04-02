@@ -17,6 +17,22 @@ exports.ListarUsuarios = async (req, res) => {
     }
 }
 
+exports.ListarEmpleados = async (req, res) => {
+    const listar = await modeloUsuario.findAll({
+        where:{
+            idtipo: 2,
+            activo: 1
+        }
+    });
+    if (listar.length == 0) {
+        //res.send("No existen empleados");
+        res.json(listar)
+    } else {
+        res.json(listar)
+
+    }
+}
+
 exports.registrarse = async (req, res) =>{
     const validacion = validationResult(req);
     const {correo, contrasena, nombre, apellido, telefono} = req.body;

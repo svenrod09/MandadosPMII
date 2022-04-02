@@ -12,7 +12,7 @@ export default function EliminarTiendaScreen({ route, navigation }) {
     const [APIData, setAPIData] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get('http://192.168.0.14:5000/api/tienda/listarActivas')
+        axios.get('http://192.168.0.11:5000/api/tienda/listarActivas')
             .then((response) => {
                 setAPIData(response.data);
             });
@@ -36,7 +36,7 @@ export default function EliminarTiendaScreen({ route, navigation }) {
           {APIData.map((element) => (
             <Card key={element.idTienda} style={styles.container} onPress={() => navigation.navigate('DesactivarTiendaScreen', { idTienda: element.idTienda, 
             nombre: element.nombreTienda, telefono: element.telefono, direccion: element.direccion, imagen: element.imagen })}>
-              <Card.Cover source={{ uri: 'http://192.168.0.14:5000/tienda/img/' + element.imagen }} />
+              <Card.Cover source={{ uri: 'http://192.168.0.11:5000/tienda/img/' + element.imagen }} />
               <Card.Content>
                 <Title>{element.nombreTienda}</Title>
               </Card.Content>

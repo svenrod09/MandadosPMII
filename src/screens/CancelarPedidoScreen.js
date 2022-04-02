@@ -5,21 +5,22 @@ import { theme } from '../core/theme'
 import axios from 'axios'
 
 const props = {
-    icon: require('../assets/icon.png')
+    icon: require('../assets/icon.png'),
+    pedido: require('../assets/pedido.webp')
 }
 
-export default function ModificarTiendaScreen({ route, navigation }) {
+export default function CancelarPedidoScreen({ route, navigation }) {
     const [APIData, setAPIData] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get('http://192.168.0.11:5000/api/tienda/listar')
+        axios.get('http://192.168.0.11:5000/api/pedido/listarActivos')
             .then((response) => {
                 setAPIData(response.data);
             });
     }, []);
 
     if (!APIData) {
-        Alert.alert("MANDADITOS", "No existen ninguna tienda.");
+        Alert.alert("MANDADITOS", "No existe ningún pedido activo.");
         navigation.goBack();
         return null;
     }
@@ -28,18 +29,24 @@ export default function ModificarTiendaScreen({ route, navigation }) {
         <><Appbar.Header style={styles.colorPrimary}>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Appbar.Action icon={props.icon} />
-            <Appbar.Content title="Modificar Tiendas" />
+            <Appbar.Content title="Cancelar Pedidos" />
             <Appbar.Action icon="format-horizontal-align-left" onPress={() => navigation.replace("StartScreen")} />
         </Appbar.Header>
             <ScrollView>
                 <TouchableOpacity>
                     {APIData.map((element) => (
-                        <Card key={element.idTienda} style={styles.container} onPress={() => navigation.navigate('ActualizarTiendaScreen', {
-                            idTienda: element.idTienda
+                        <Card key={element.idPedido} style={styles.container} onPress={() => navigation.navigate('PedidoCanceladoScreen', {
+                            idPedido: element.idPedido, hora: element.hora, direccion: element.direccion, total: element.total,
+                            formapago: element.formapago
                         })}>
-                            <Card.Cover source={{ uri: 'http://192.168.0.11:5000/tienda/img/' + element.imagen }} />
+                            <Card.Cover source={props.pedido} />
                             <Card.Content>
-                                <Title>{element.nombreTienda}</Title>
+                                <Title>Pedido #: {element.idPedido}</Title>
+                                <Paragraph>Fecha del pedido: {element.hora}</Paragraph>
+                                <Paragraph>Dirección de entrega: {element.direccion}</Paragraph>
+                                <Paragraph>Total: L{element.total}</Paragraph>
+                                <Paragraph>Forma de Pago: {element.formapago}</Paragraph>
+                                <Paragraph>Estado: Activo</Paragraph>
                             </Card.Content>
                         </Card>
                     ))}

@@ -8,42 +8,39 @@ const props = {
     icon: require('../assets/icon.png')
 }
 
-export default function ListarTiendaScreen({ route, navigation }) { 
-    const [APIData, setAPIData] = React.useState([]);
+export default function DesactivarCategoriaScreen({ route, navigation }) {
+    const { id, nombre, imagen } = route.params;
 
-    React.useEffect(() => {
-        axios.get('http://192.168.0.11:5000/api/tienda/listarActivas')
-            .then((response) => {
-                setAPIData(response.data);
-            });
-    }, []);
-
-    if (!APIData) {
-        Alert.alert("MANDADITOS", "No existen tiendas activas.");
-        navigation.goBack();
-        return null;
+    const btnPressed = async () => {
+        if (!id) {
+            Alert.alert("MANDADITOS", "Ocurrió un error al desactivar la categoría.");
+            navigation.goBack();
+        }
+        else {
+            axios.put('http://192.168.0.11:5000/api/categorias/eliminar?id='+id, { params: { id: id } })
+            Alert.alert("MANDADITOS", "Categoría desactivada con éxito.");
+            navigation.navigate('CRUDCategoriasScreen');
+        }
     }
 
     return (
         <><Appbar.Header style={styles.colorPrimary}>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Appbar.Action icon={props.icon} />
-            <Appbar.Content title="Listar Tiendas" />
+            <Appbar.Content title="Eliminar Categoría" />
             <Appbar.Action icon="format-horizontal-align-left" onPress={() => navigation.replace("StartScreen")} />
         </Appbar.Header>
-        <ScrollView>
-        <TouchableOpacity>
-          {APIData.map((element) => (
-            <Card key={element.idTienda} style={styles.container} onPress={() => navigation.navigate('VerTiendaScreen', { id: element.idTienda, 
-            nombre: element.nombreTienda, telefono: element.telefono, direccion: element.direccion, imagen: element.imagen })}>
-              <Card.Cover source={{ uri: 'http://192.168.0.11:5000/tienda/img/' + element.imagen }} />
-              <Card.Content>
-                <Title>{element.nombreTienda}</Title>
-              </Card.Content>
-            </Card>
-          ))}
-        </TouchableOpacity>
-      </ScrollView>
+            <ScrollView>
+                <Card style={styles.container} >
+                    <Card.Cover source={{ uri: 'http://192.168.0.11:5000/categorias/imgC/' + imagen }} />
+                    <Card.Content>
+                        <Title>Nombre de la categoría: {nombre}</Title>
+                        <Paragraph>Estado: Activo</Paragraph>
+                    </Card.Content>
+                </Card>
+                <Button color={theme.colors.primary} mode="contained" onPress={btnPressed}>
+                    Desactivar</Button>
+            </ScrollView>
         </>
     );
 }

@@ -3,7 +3,8 @@ const ModeloTienda = require('../modelos/modeloTienda');
 exports.listarTiendas = async (req, res) => {
     const listaTiendas = await ModeloTienda.findAll();
     if (!listaTiendas) {
-        res.send("No existe ninguna tienda en la base de datos.");
+        //res.send("No existe ninguna tienda en la base de datos.");
+        res.json(listaTiendas);
     }
     else {
         res.json(listaTiendas);
@@ -16,7 +17,8 @@ exports.listarTiendasActivas = async (req, res) => {
         }
     });
     if (!listaTiendas) {
-        res.send("No existe ninguna tienda en la base de datos.");
+        //res.send("No existe ninguna tienda en la base de datos.");
+        res.json(listaTiendas);
     }
     else {
         res.json(listaTiendas);
@@ -37,7 +39,8 @@ exports.listarXCategorias = async (req, res) => {
         });
     }
     if (!buscarTienda) {
-        res.send("El id de la categoría no existe.");
+        //res.send("El id de la categoría no existe.");
+        res.json(buscarTienda);
     }
     else {
         res.json(buscarTienda);

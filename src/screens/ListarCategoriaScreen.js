@@ -8,18 +8,18 @@ const props = {
     icon: require('../assets/icon.png')
 }
 
-export default function ListarTiendaScreen({ route, navigation }) { 
+export default function ListarCategoriaScreen({ route, navigation }) { 
     const [APIData, setAPIData] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get('http://192.168.0.11:5000/api/tienda/listarActivas')
+        axios.get('http://192.168.0.11:5000/api/categorias/listarActivas')
             .then((response) => {
                 setAPIData(response.data);
             });
     }, []);
 
     if (!APIData) {
-        Alert.alert("MANDADITOS", "No existen tiendas activas.");
+        Alert.alert("MANDADITOS", "No existen categorías activas.");
         navigation.goBack();
         return null;
     }
@@ -28,17 +28,17 @@ export default function ListarTiendaScreen({ route, navigation }) {
         <><Appbar.Header style={styles.colorPrimary}>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Appbar.Action icon={props.icon} />
-            <Appbar.Content title="Listar Tiendas" />
+            <Appbar.Content title="Listar Categorías" />
             <Appbar.Action icon="format-horizontal-align-left" onPress={() => navigation.replace("StartScreen")} />
         </Appbar.Header>
         <ScrollView>
         <TouchableOpacity>
           {APIData.map((element) => (
-            <Card key={element.idTienda} style={styles.container} onPress={() => navigation.navigate('VerTiendaScreen', { id: element.idTienda, 
-            nombre: element.nombreTienda, telefono: element.telefono, direccion: element.direccion, imagen: element.imagen })}>
-              <Card.Cover source={{ uri: 'http://192.168.0.11:5000/tienda/img/' + element.imagen }} />
+            <Card key={element.idCategorias} style={styles.container} onPress={() => navigation.navigate('VerCategoriaScreen', { id: element.idCategorias, 
+            nombre: element.nombre, imagen: element.imagen })}>
+              <Card.Cover source={{ uri: 'http://192.168.0.11:5000/categorias/imgC/' + element.imagen }} />
               <Card.Content>
-                <Title>{element.nombreTienda}</Title>
+                <Title>{element.nombre}</Title>
               </Card.Content>
             </Card>
           ))}

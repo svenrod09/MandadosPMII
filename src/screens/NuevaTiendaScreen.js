@@ -20,7 +20,7 @@ export default function NuevaTiendaScreen({ route, navigation }) {
     const [APIData, setAPIData] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get('http://192.168.0.14:5000/api/categorias/listarActivas')
+        axios.get('http://192.168.0.11:5000/api/categorias/listarActivas')
             .then((response) => {
                 setAPIData(response.data);
             });
@@ -42,7 +42,7 @@ export default function NuevaTiendaScreen({ route, navigation }) {
             setDireccion({ ...direccion, error: direccionError })
         }
         else {
-            axios.post("http://192.168.0.14:5000/api/tienda/guardar", {
+            axios.post("http://192.168.0.11:5000/api/tienda/guardar", {
                 nombre: nombre.value,
                 telefono: telefono.value,
                 direccion: direccion.value,

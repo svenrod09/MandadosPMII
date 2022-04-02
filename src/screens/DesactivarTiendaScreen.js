@@ -17,7 +17,7 @@ export default function DesactivarTiendaScreen({ route, navigation }) {
             navigation.goBack();
         }
         else {
-            axios.put('http://192.168.0.14:5000/api/tienda/eliminar?id='+idTienda, { params: { id: idTienda } })
+            axios.put('http://192.168.0.11:5000/api/tienda/eliminar?id='+idTienda, { params: { id: idTienda } })
             Alert.alert("MANDADITOS", "Tienda desactivada con éxito.");
             navigation.navigate('CRUDTiendasScreen');
         }
@@ -32,7 +32,7 @@ export default function DesactivarTiendaScreen({ route, navigation }) {
         </Appbar.Header>
             <ScrollView>
                 <Card style={styles.container} >
-                    <Card.Cover source={{ uri: 'http://192.168.0.14:5000/tienda/img/' + imagen }} />
+                    <Card.Cover source={{ uri: 'http://192.168.0.11:5000/tienda/img/' + imagen }} />
                     <Card.Content>
                         <Title>Nombre de la tienda: {nombre}</Title>
                         <Paragraph>Teléfono: {telefono}</Paragraph>

@@ -1,34 +1,34 @@
 import React from 'react';
-import { ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native'
-import { Appbar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import { ScrollView, TouchableOpacity, StyleSheet } from 'react-native'
+import { Appbar, Card, Title, Paragraph } from 'react-native-paper';
 import { theme } from '../core/theme'
 
 const props = {
-    icon: require('../assets/icon.png')
+    icon: require('../assets/icon.png'),
+    entrega: require('../assets/entrega.webp')
 }
 
-export default function VerTiendaScreen({ route, navigation }) {
-    const { id, nombre, telefono, direccion, imagen } = route.params;
+export default function EmpleadoScreen({ route, navigation }) {
 
     return (
         <><Appbar.Header style={styles.colorPrimary}>
-            <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Appbar.Action icon={props.icon} />
-            <Appbar.Content title="Listar Tienda" />
+            <Appbar.Content title="Empleado" />
             <Appbar.Action icon="format-horizontal-align-left" onPress={() => navigation.replace("StartScreen")} />
         </Appbar.Header>
         <ScrollView>
-            <Card key={id} style={styles.container} >
-              <Card.Cover source={{ uri: 'http://192.168.0.11:5000/tienda/img/' + imagen }} />
-              <Card.Content>
-                <Title>Nombre de la tienda: {nombre}</Title>
-                <Paragraph>Teléfono: {telefono}</Paragraph>
-                <Paragraph>Dirección: {direccion}</Paragraph>
-                <Paragraph>Estado: Activo</Paragraph>
-              </Card.Content>
-            </Card>
-      </ScrollView>
+        <TouchableOpacity>
+                <Card style={styles.container} onPress={() => navigation.navigate('EntregaPedidoScreen') }>
+                    <Card.Cover source={props.entrega} />
+                    <Card.Content>
+                        <Title>Entregar Pedido</Title>
+                        <Paragraph>Confirma la entrega de un pedido asignado.</Paragraph>
+                    </Card.Content>
+                </Card>
+            </TouchableOpacity>
+        </ScrollView>       
         </>
+
     );
 }
 

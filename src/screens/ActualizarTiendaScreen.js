@@ -22,7 +22,7 @@ export default function ActualizarTiendaScreen({ route, navigation }) {
     const [APIData, setAPIData] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get('http://192.168.0.14:5000/api/categorias/listarActivas')
+        axios.get('http://192.168.0.11:5000/api/categorias/listarActivas')
             .then((response) => {
                 setAPIData(response.data);
             });
@@ -44,7 +44,7 @@ export default function ActualizarTiendaScreen({ route, navigation }) {
             setDireccion({ ...direccion, error: direccionError })
         }
         else {
-            axios.put("http://192.168.0.14:5000/api/tienda/modificar?id=" + idTienda, {
+            axios.put("http://192.168.0.11:5000/api/tienda/modificar?id=" + idTienda, {
                     id: idTienda,
                     nombre: nombre.value,
                     telefono: telefono.value,

@@ -8,18 +8,18 @@ const props = {
     icon: require('../assets/icon.png')
 }
 
-export default function ListarTiendaScreen({ route, navigation }) { 
+export default function AgregarImagenScreen({ route, navigation }) {
     const [APIData, setAPIData] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get('http://192.168.0.11:5000/api/tienda/listarActivas')
+        axios.get('http://192.168.0.11:5000/api/tienda/listar')
             .then((response) => {
                 setAPIData(response.data);
             });
     }, []);
 
     if (!APIData) {
-        Alert.alert("MANDADITOS", "No existen tiendas activas.");
+        Alert.alert("MANDADITOS", "No existen ninguna tienda.");
         navigation.goBack();
         return null;
     }
@@ -28,22 +28,23 @@ export default function ListarTiendaScreen({ route, navigation }) {
         <><Appbar.Header style={styles.colorPrimary}>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Appbar.Action icon={props.icon} />
-            <Appbar.Content title="Listar Tiendas" />
+            <Appbar.Content title="Agregar Imagen" />
             <Appbar.Action icon="format-horizontal-align-left" onPress={() => navigation.replace("StartScreen")} />
         </Appbar.Header>
-        <ScrollView>
-        <TouchableOpacity>
-          {APIData.map((element) => (
-            <Card key={element.idTienda} style={styles.container} onPress={() => navigation.navigate('VerTiendaScreen', { id: element.idTienda, 
-            nombre: element.nombreTienda, telefono: element.telefono, direccion: element.direccion, imagen: element.imagen })}>
-              <Card.Cover source={{ uri: 'http://192.168.0.11:5000/tienda/img/' + element.imagen }} />
-              <Card.Content>
-                <Title>{element.nombreTienda}</Title>
-              </Card.Content>
-            </Card>
-          ))}
-        </TouchableOpacity>
-      </ScrollView>
+            <ScrollView>
+                <TouchableOpacity>
+                    {APIData.map((element) => (
+                        <Card key={element.idTienda} style={styles.container} onPress={() => navigation.navigate('SeleccionarImagenScreen', {
+                            idTienda: element.idTienda
+                        })}>
+                            <Card.Cover source={{ uri: 'http://192.168.0.11:5000/tienda/img/' + element.imagen }} />
+                            <Card.Content>
+                                <Title>{element.nombreTienda}</Title>
+                            </Card.Content>
+                        </Card>
+                    ))}
+                </TouchableOpacity>
+            </ScrollView>
         </>
     );
 }

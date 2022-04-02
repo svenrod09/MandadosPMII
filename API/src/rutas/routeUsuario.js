@@ -7,6 +7,7 @@ const controladorAutenticacion = require('../controladores/controladosAutenticac
 
 route.get('/', controlador.inicio);
 route.get('/listar', controladorAutenticacion.validarAutenticado , controlador.ListarUsuarios);
+route.get('/listarEmpleados', controlador.ListarEmpleados);
 
 //REGISTRARSE
 route.post('/registrarse', 

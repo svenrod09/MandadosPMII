@@ -12,58 +12,58 @@ const props = {
     cambiarimg: require('../assets/imagen.png')
 }
 
-export default function CRUDTiendasScreen({ route, navigation }) {
+export default function CRUDCategoriasScreen({ route, navigation }) {
 
     return (
         <><Appbar.Header style={styles.colorPrimary}>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Appbar.Action icon={props.icon} />
-            <Appbar.Content title="Gestión de Tiendas" />
+            <Appbar.Content title="Gestión de Categorías" />
             <Appbar.Action icon="format-horizontal-align-left" onPress={() => navigation.replace("StartScreen")} />
         </Appbar.Header>
             <ScrollView>
                 <TouchableOpacity>
-                    <Card style={styles.container} onPress={() => navigation.navigate('NuevaTiendaScreen')}>
+                    <Card style={styles.container} onPress={() => navigation.navigate('NuevaCategoriaScreen')}>
                         <Card.Cover source={props.nuevo} />
                         <Card.Content>
                             <Title>Añadir</Title>
-                            <Paragraph>Añade una nueva tienda.</Paragraph>
+                            <Paragraph>Añade una nueva categoría.</Paragraph>
                         </Card.Content>
                     </Card>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Card style={styles.container} onPress={() => navigation.navigate('ListarTiendaScreen')}>
+                    <Card style={styles.container} onPress={() => navigation.navigate('ListarCategoriaScreen')}>
                         <Card.Cover source={props.listar} />
                         <Card.Content>
                             <Title>Listar</Title>
-                            <Paragraph>Lista las tiendas disponibles.</Paragraph>
+                            <Paragraph>Lista las categorías disponibles.</Paragraph>
                         </Card.Content>
                     </Card>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Card style={styles.container} onPress={() => navigation.navigate('ModificarTiendaScreen')}>
+                    <Card style={styles.container} onPress={() => navigation.navigate('ModificarCategoriaScreen')}>
                         <Card.Cover source={props.modificar} />
                         <Card.Content>
                             <Title>Modificar</Title>
-                            <Paragraph>Modifica los datos de una tienda.</Paragraph>
+                            <Paragraph>Modifica los datos de una categoría.</Paragraph>
                         </Card.Content>
                     </Card>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Card style={styles.container} onPress={() => navigation.navigate('EliminarTiendaScreen')}>
+                    <Card style={styles.container} onPress={() => navigation.navigate('EliminarCategoriaScreen')}>
                         <Card.Cover source={props.eliminar} />
                         <Card.Content>
                             <Title>Eliminar</Title>
-                            <Paragraph>Elimina los datos de una tienda.</Paragraph>
+                            <Paragraph>Elimina los datos de una categoría.</Paragraph>
                         </Card.Content>
                     </Card>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Card style={styles.container} onPress={() => navigation.navigate('AgregarImagenScreen')}>
+                    <Card style={styles.container} onPress={() => navigation.navigate('AgregarImagenCScreen')}>
                         <Card.Cover source={props.cambiarimg} />
                         <Card.Content>
                             <Title>Añadir Imagen</Title>
-                            <Paragraph>Añade la imagen de una tienda.</Paragraph>
+                            <Paragraph>Añade la imagen de una categoría.</Paragraph>
                         </Card.Content>
                     </Card>
                 </TouchableOpacity>
