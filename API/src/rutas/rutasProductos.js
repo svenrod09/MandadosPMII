@@ -4,6 +4,7 @@ const { body, query } =require('express-validator');
 const router = Router();
 router.get('/', controladorProducto.inicio);
 router.get('/listar', controladorProducto.listarproductos);
+router.get('/listarActivo', controladorProducto.listarProductoActivo);
 router.get('/listarXTienda', query('id').isInt().withMessage('Debe enviar el id de la tienda'), 
 controladorProducto.listarXTiendas);
 router.post('/guardar',

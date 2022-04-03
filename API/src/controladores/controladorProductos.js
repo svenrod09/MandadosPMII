@@ -1,19 +1,35 @@
 const ModeloProducto = require('../modelos/modeloProductos');
 
-exports.inicio = async (req, res) => {
+exports.inicio= async (req,res)=>{
     res.send("Hola estas en el inicio de personas");
 };
 
 //Mostrar
-exports.listarproductos = async (req, res) => {
+exports.listarproductos = async (req,res)=>{
     const listaProductos = await ModeloProducto.findAll();
-    if (listaProductos.length == 0) {
+    if(listaProductos.length==0){
         res.send("No existen productos en la base");
     }
-    else {
+    else{
         res.json(listaProductos);
     }
 };
+
+exports.listarProductoActivo = async (req, res) => {
+    const lista = await ModeloProducto.findAll({
+        where: {
+            estado: 'DISPONIBLE'
+        }
+    });
+
+    if (lista.length == 0) {
+        res.send("No se encuentran productos disponibles");
+    }
+    else {
+        res.json(lista);
+    }
+}
+
 exports.listarXTiendas = async (req, res) => {
     const { id } = req.query;
     if(!id){
@@ -34,142 +50,144 @@ exports.listarXTiendas = async (req, res) => {
         }
     }
 };
+
 //guardar
-exports.guardar = async (req, res) => {
-    const { nombreProducto, precioProducto, cantidad, estado, imagen, idtienda } = req.body;
-    if (!nombreProducto || !precioProducto || !cantidad || !imagen || !idtienda) {
+exports.guardar = async (req,res)=>{
+    const {nombreProducto , precioProducto,cantidad, estado,imagen,idtienda} = req.body;
+    if(!nombreProducto || !precioProducto || !cantidad || !imagen || !idtienda){
         res.send("Debe enviar los datos obligatorios");
     }
-    else {
+    else{
         await ModeloProducto.create({
-            nombreProducto: nombreProducto,
-            precioProducto: precioProducto,
-            cantidad: cantidad,
-            imagen: imagen,
-            idtienda: idtienda,
+            nombreProducto:nombreProducto,
+            precioProducto:precioProducto,
+            cantidad:cantidad,
+            imagen:imagen,
+            idtienda:idtienda,
         })
-            .then((data) => {
-                console.log(data.nombreProducto);
-                res.send("Registro almacenado");
-            })
-            .catch((error) => {
-                console.log(error);
-                res.send("Error al guardar los datos");
-            });
+        .then((data)=>{
+            console.log(data.nombreProducto);
+            res.send("Registro almacenado");
+        })
+        .catch((error)=>{
+            console.log(error);
+            res.send("Error al guardar los datos");
+        });
     }
-
+  
 };
 
 
-exports.modificar = async (req, res) => {
-    const { idproductos } = req.query;
-    const { nombreProducto, precioProducto, cantidad, estado, imagen, idtienda } = req.body
+exports.modificar = async (req,res)=>{
+    const {idproductos} = req.query;
+    const {nombreProducto, precioProducto,cantidad, estado,imagen,idtienda} = req.body
 
-    if (!idproductos || !nombreProducto || !precioProducto || !cantidad || !imagen || !idtienda) {
+    if(!idproductos || !nombreProducto || !precioProducto || !cantidad || !imagen || !idtienda){
         res.send("Envie los datos completos");
     }
-    else {
+    else{
         var buscarProducto = await ModeloProducto.findOne({
-            where: {
+            where:{
                 idproductos: idproductos,
                 estado: 'DISPONIBLE',
             }
         });
-        if (!buscarProducto) {
+        if(!buscarProducto){
             res.send("El producto no existe o no se encuentra disponible");
         }
-        else {
+        else{
             buscarProducto.nombreProducto = nombreProducto;
             buscarProducto.precioProducto = precioProducto;
             buscarProducto.cantidad = cantidad;
             buscarProducto.imagen = imagen;
             buscarProducto.idtienda = idtienda;
             await buscarProducto.save()
-                .then((data) => {
-                    console.log(data);
-                    res.send("Producto actualizado");
-                })
-                .catch((error) => {
-                    console.log(error);
-                    res.send("Error al modificar el producto");
-                });
-
+            .then((data)=>{
+                console.log(data);
+                res.send("Producto actualizado");
+            })
+            .catch((error)=>{
+                console.log(error);
+                res.send("Error al modificar el producto");
+            });
+            
         }
-        // console.log(buscarProducto)
+       // console.log(buscarProducto)
     }
 };
 
-exports.eliminar = async (req, res) => {
-    const { idproductos } = req.query;
-    if (!idproductos) {
+exports.eliminar = async (req,res)=>{
+    const {idproductos} = req.query;
+    if(!idproductos){
         res.send("Envie los datos completos");
     }
-    else {
+    else{
         var buscarProducto = await ModeloProducto.findOne({
-            where: {
+            where:{
                 idproductos: idproductos,
                 estado: 'DISPONIBLE',
             }
         });
-        if (!buscarProducto) {
+        if(!buscarProducto){
             res.send("El producto no existe o no se encuentra disponible");
         }
-        else {
+        else{
 
             buscarProducto.estado = 'AGOTADO';
             await buscarProducto.save()
-                .then((data) => {
-                    console.log(data);
-                    res.send("Producto actualizado");
-                })
-                .catch((error) => {
-                    console.log(error);
-                    res.send("Error al modificar el producto");
-                });
-
+            .then((data)=>{
+                console.log(data);
+                res.send("Producto actualizado");
+            })
+            .catch((error)=>{
+                console.log(error);
+                res.send("Error al modificar el producto");
+            });
+            
         }
     }
-};
+    };
 
 
-exports.Recibirp = async (req, res) => {
-    const { filename } = req.file;
-    const { idproductos } = req.query;
-    console.log(idproductos);
-    var BuscarProducto = await ModeloProducto.findOne({
-        where: {
-            idproductos: idproductos
-        }
-    });
-    if (!BuscarProducto) {
-        msj('El producto no existe', 200, [], res);
-    }
-    else {
-        try {
-            const buscarImagen = fs.existsSync(path.join(__dirname, '../public/img/' + BuscarProducto.imagen));
-            if (!buscarImagen) {
-                console.log('La imagen no existe');
+    exports.Recibirp = async (req, res) => {
+        const{ filename } = req.file;
+        const {idproductos} = req.query;
+        console.log(idproductos);
+        var BuscarProducto = await ModeloProducto.findOne({
+            where:{
+                idproductos : idproductos
             }
-            else {
-                try {
-                    fs.unlinkSync(path.join(__dirname, '../public/img/' + BuscarProducto.imagen));
-                    console.log('Imagen eliminada');
-                } catch (error) {
-                    console.log('Error al eliminar la imagen' + error);
+        });
+        if(!BuscarProducto){
+            msj('El producto no existe', 200,[], res);
+        }
+        else{
+            try{
+                const buscarImagen = fs.existsSync(path.join(__dirname, '../public/img/'+ BuscarProducto.imagen));
+                if(!buscarImagen){
+                    console.log('La imagen no existe');
+                }
+                else{
+                    try {
+                        fs.unlinkSync(path.join(__dirname, '../public/img/'+ BuscarProducto.imagen));
+                        console.log('Imagen eliminada');
+                    } catch (error) {
+                        console.log('Error al eliminar la imagen'+ error);
+                    }
                 }
             }
-        }
-        catch (error) {
-            console.log(error);
-        }
-        BuscarProducto.imagen = filename;
-        await buscarImagen.save()
-            .then((data) => {
+            catch(error){
+                console.log(error);
+            }
+            BuscarProducto.imagen = filename;
+            await buscarImagen.save()
+            .then((data)=>{
                 msj('Archivo Almacenado');
             })
-            .catch((error) => {
-                msj('Error', 200, error, res);
+            .catch((error)=>{
+                msj('Error',200,error,res);
             });
-    }
-};
+        }
+    };
 
+    
