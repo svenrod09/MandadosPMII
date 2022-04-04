@@ -1,6 +1,6 @@
 const sequelize = require('sequelize');
 const db = require('../configuracion/db');
-const DetallePedido =db.define(
+const DetallePedido = db.define(
     "detallepedido",
     {
         idDetalle:{
@@ -13,14 +13,14 @@ const DetallePedido =db.define(
             type: sequelize.INTEGER,
             allowNull: false,
         },
-        idproducto:{
+        idempleado:{
             type: sequelize.INTEGER,
             allowNull: false,
         },
-        cantidad:{
-            type: sequelize.INTEGER,
-            allowNull: true,
-            defaultValue: 1,
+        entregado:{
+            type: sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: 0,
         },
     },
     {

@@ -1,9 +1,33 @@
 const { validationResult } = require("express-validator");
-const ModeloDetalle= require('../modelos/modeloDetallePedido');
+const ModeloDetalle = require('../modelos/modeloDetallePedido');
+
+exports.listarDetalleXEmpleado = async (req,res) => {
+    const validacion = validationResult(req);
+    if(!validacion.isEmpty()){
+        console.log(validacion.array());
+        res.send("Error en los datos enviados.");
+    }
+    else{
+        const {idempleado}=req.query;
+        const buscarDetalle = await ModeloDetalle.findAll({
+            where:{
+                idempleado: idempleado,
+                entregado: 0
+            }
+        });
+        if(!buscarDetalle){
+            //res.send("El id del usuario no existe.");
+            res.json(buscarDetalle);
+        }
+        else{
+            res.json(buscarDetalle);
+        }  
+    }
+};
 exports.listarDetalle = async (req,res) => {
     const listaDetalles = await ModeloDetalle.findAll();
 
-    if(!listaDetalles.lefth == 0){
+    if(!listaDetalles.length == 0){
         res.send("No existe ningún detalle de pedido en la base de datos.");
     }
     else{
@@ -17,11 +41,10 @@ exports.guardar = async (req,res) => {
         res.send("Error en los datos enviados.");
     }
     else{
-        const { idpedido, idproducto, cantidad } = req.body;
+        const { idpedido, idempleado} = req.body;
         await ModeloDetalle.create({
             idpedido: idpedido,
-            idproducto: idproducto,
-            cantidad: cantidad,
+            idempleado: idempleado
         })
         .then((data)=>{
             console.log(data);
@@ -40,7 +63,6 @@ exports.modificar = async (req,res) => {
     }
     else{
         const {id}=req.query;
-        const { idpedido, idproducto, cantidad } = req.body;
         var buscarDetalle = await ModeloDetalle.findOne({
             where:{
                 idDetalle: id
@@ -50,9 +72,7 @@ exports.modificar = async (req,res) => {
             res.send("El id del detalle de pedido no existe.");
         }
         else{
-            buscarDetalle.idpedido=idpedido;
-            buscarDetalle.idproducto=idproducto;
-            buscarDetalle.cantidad=cantidad;
+            buscarDetalle.entregado = 1;
             await buscarDetalle.save()
             .then((data)=>{
                 console.log(data);

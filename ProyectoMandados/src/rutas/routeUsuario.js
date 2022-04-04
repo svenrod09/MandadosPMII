@@ -7,6 +7,9 @@ const controladorAutenticacion = require('../controladores/controladosAutenticac
 
 route.get('/', controlador.inicio);
 route.get('/listar', controladorAutenticacion.validarAutenticado , controlador.ListarUsuarios);
+route.get('/ListarTipos', controlador.ListarTipos);
+route.get('/ListarEmpleados', controlador.listarEmpleados);
+route.get('/ListarTodos', controlador.listarTodosE);
 
 //MOSTRAR X USUARIO
 route.get('/listarX', 
@@ -35,13 +38,12 @@ controlador.registrarE);
 //MODIFICAR
 route.put('/modificar', 
 query('id').isInt().withMessage("Debe ingresar el id del usuario"),
-body('contrasena').isLength({min: 6}).withMessage("Debe contener como mínimo 6 caracteres"), controladorAutenticacion.validarAutenticado ,
+body('contrasena').isLength({min: 6}).withMessage("Debe contener como mínimo 6 caracteres"),
 controlador.modificarContraseña);
 
 
-route.post('/deshabilitar', 
-body('correo').isEmail().withMessage("Debe ecribir una dirección de correo válida."),
-controladorAutenticacion.validarAutenticado,
+route.put('/deshabilitar', 
+query('id').isInt().withMessage("Ingrese un id válido"),
 controlador.deshabilitar);
 
 route.get('/error', controladorAutenticacion.ErrorAutenticacion);

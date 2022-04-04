@@ -16,6 +16,7 @@ const Categoria =db.define(
         activo:{
             type: sequelize.BOOLEAN,
             allowNull: false,
+            defaultValue: 1
         },
         imagen:{
             type: sequelize.STRING(250),

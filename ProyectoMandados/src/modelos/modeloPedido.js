@@ -21,7 +21,7 @@ const Pedidos = db.define(
             allowNull: false
         },
         estado: {
-            type: sequelize.ENUM('AC', 'EN', 'C'),
+            type: sequelize.ENUM('AC', 'AS', 'EN', 'C'),
             allowNull: true,
             defaultValue: 'AC'
         },
@@ -50,10 +50,11 @@ const Pedidos = db.define(
             type: sequelize.STRING,
             allowNull: true,
         },
+
         total: {
             type: sequelize.DECIMAL,
             allowNull: true,
-        }
+        },
     },
 
     {

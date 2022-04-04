@@ -20,7 +20,7 @@ const Producto=db.define(
         },
         cantidad:{
             type: sequelize.INTEGER,
-            allowNull:false,
+            allowNull:true,
         },
         estado:{
             type: sequelize.ENUM('AGOTADO', 'DISPONIBLE'),
@@ -29,7 +29,7 @@ const Producto=db.define(
         },
         imagen:{
             type: sequelize.STRING(250),
-            allowNull:false,
+            allowNull:true,
         },
         idtienda:{
             type: sequelize.INTEGER,

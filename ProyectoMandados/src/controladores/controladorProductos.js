@@ -15,6 +15,24 @@ exports.listarproductos = async (req,res)=>{
     }
 };
 
+
+exports.listarProductoActivo = async (req, res) => {
+    const lista = await ModeloProducto.findAll({
+        where: {
+            estado: 'DISPONIBLE'
+        }
+    });
+
+    if (lista.length == 0) {
+        //res.send("No se encuentran productos disponibles");
+        res.json(lista);
+    }
+    else {
+        res.json(lista);
+    }
+}
+
+
 exports.listarXTiendas = async (req, res) => {
     const { id } = req.query;
     if(!id){
@@ -38,16 +56,14 @@ exports.listarXTiendas = async (req, res) => {
 
 //guardar
 exports.guardar = async (req,res)=>{
-    const {nombreProducto , precioProducto,cantidad, estado,imagen,idtienda} = req.body;
-    if(!nombreProducto || !precioProducto || !cantidad || !imagen || !idtienda){
+    const {nombreProducto , precioProducto, estado,idtienda} = req.body;
+    if(!nombreProducto || !precioProducto ||  !idtienda){
         res.send("Debe enviar los datos obligatorios");
     }
     else{
         await ModeloProducto.create({
             nombreProducto:nombreProducto,
             precioProducto:precioProducto,
-            cantidad:cantidad,
-            imagen:imagen,
             idtienda:idtienda,
         })
         .then((data)=>{
@@ -65,16 +81,16 @@ exports.guardar = async (req,res)=>{
 
 exports.modificar = async (req,res)=>{
     const {idproductos} = req.query;
-    const {nombreProducto, precioProducto,cantidad, estado,imagen,idtienda} = req.body
+    const {nombreProducto, precioProducto, estado,idtienda} = req.body
 
-    if(!idproductos || !nombreProducto || !precioProducto || !cantidad || !imagen || !idtienda){
+    if(!idproductos || !nombreProducto || !precioProducto ||  !idtienda){
         res.send("Envie los datos completos");
     }
     else{
         var buscarProducto = await ModeloProducto.findOne({
             where:{
                 idproductos: idproductos,
-                estado: 'DISPONIBLE',
+               
             }
         });
         if(!buscarProducto){
@@ -83,9 +99,8 @@ exports.modificar = async (req,res)=>{
         else{
             buscarProducto.nombreProducto = nombreProducto;
             buscarProducto.precioProducto = precioProducto;
-            buscarProducto.cantidad = cantidad;
-            buscarProducto.imagen = imagen;
             buscarProducto.idtienda = idtienda;
+            buscarProducto.estado = estado;
             await buscarProducto.save()
             .then((data)=>{
                 console.log(data);

@@ -4,6 +4,7 @@ const { body, query } =require('express-validator');
 const router = Router();
 router.get('/', controladorProducto.inicio);
 
+router.get('/listarActivo', controladorProducto.listarProductoActivo);
 
 router.get('/listar', controladorProducto.listarproductos);
 
@@ -14,8 +15,6 @@ controladorProducto.listarXTiendas);
 router.post('/guardar',
 body('nombreProducto').isString().withMessage('Ingrese un producto valido'),
 body('nombreProducto').isLength({min:1}).withMessage('Ingrese un producto valido'),
-body('precioProducto').isNumeric().withMessage('Ingrese un a cantidad valida'),
-body('cantidad').isInt().withMessage('Ingrese ingresar una cantidad valida'),
 body('idtienda').isInt().withMessage('ingrese un codigo valido'),
 controladorProducto.guardar);
 
@@ -24,8 +23,6 @@ router.put('/modificar',
 query('idproductos').isInt().withMessage('ingrese un codigo valido'),
 body('nombreProducto').isString().withMessage('Ingrese un producto valido'),
 body('nombreProducto').isLength({min:1}).withMessage('Ingrese un producto valido'),
-body('precioProducto').isNumeric().withMessage('Ingrese un a cantidad valida'),
-body('cantidad').isInt().withMessage('Ingrese ingresar una cantidad valida'),
 body('idtienda').isInt().withMessage('ingrese un codigo valido'),
 controladorProducto.modificar);
 

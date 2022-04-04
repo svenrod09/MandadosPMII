@@ -10,7 +10,8 @@ exports.listarcategoria = async (req, res) => {
     const listaCategoria = await ModeloCategoria.findAll();
 
     if (listaCategoria.length == 0) {
-        res.send("No existe Categorias en la base");
+        //res.send("No existe Categorias en la base");
+        res.json(listaCategoria);
     }
     else {
         res.json(listaCategoria);
@@ -24,7 +25,8 @@ exports.listarcategoriaActivo = async (req, res) => {
     });
 
     if (listaCategoria.length == 0) {
-        res.send("No existen categorías activas");
+        //res.send("No existen categorías activas");
+        res.json(listaCategoria);
     }
     else {
         res.json(listaCategoria);

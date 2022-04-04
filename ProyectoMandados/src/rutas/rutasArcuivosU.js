@@ -17,5 +17,5 @@ const upload = multer({
 });
 const router = Router();
 
-router.post('/imgU', controladorAutenticacion.validarAutenticado ,upload.single('imgU'), controladorArchivos.Recibir);
+router.post('/imgU', upload.single('imgU'), controladorArchivos.Recibir);
 module.exports= router;

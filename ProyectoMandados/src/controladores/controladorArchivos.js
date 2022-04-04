@@ -5,7 +5,7 @@ const ModeloTienda = require('../modelos/modeloTienda');
 
 
 exports.Recibir = async (req, res) => {
-    const { filename } = req.file;
+    const { filename } = req.body;
     const { id } = req.query;
     console.log(id);
     var BuscarTienda = await ModeloTienda.findOne({
@@ -39,7 +39,8 @@ exports.Recibir = async (req, res) => {
             res.send('Archivo almacenado.');
         })
         .catch((error) => {
-            console.log(error);
+            console.log(filename);
+            
         });
     }
 };

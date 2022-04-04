@@ -1,4 +1,5 @@
 const modeloUsuario = require('../modelos/modelUsuario');
+const modeloTipo = require('../modelos/modeloTipo');
 const { validationResult } = require('express-validator');
 const  msj  = require("../componente/mensajes");
 const controladorA = require("../controladores/controladosAutenticacion");
@@ -18,6 +19,17 @@ exports.ListarUsuarios = async (req, res) => {
     }
 }
 
+exports.ListarTipos = async (req, res) => {
+    const listar = await modeloTipo.findAll();
+    if (listar.length == 0) {
+        res.send("No existen Tipos de Usuario");
+    } else {
+        res.json(listar)
+
+    }
+}
+
+
 exports.listarXUsuario = async (req, res) =>{
     const { id } = req.query;
 
@@ -32,7 +44,8 @@ exports.listarXUsuario = async (req, res) =>{
     });
 
     if (listar.length == 0) {
-        res.send("No existen Usuarios");
+        //res.send("No existen Usuarios");
+        res.json(listar)
     } else {
         res.json(listar)
 
@@ -41,6 +54,44 @@ exports.listarXUsuario = async (req, res) =>{
 
 }
 
+exports.listarEmpleados = async (req, res) =>{
+
+    const listar = await modeloUsuario.findAll({
+        where: {
+            idtipo: 2,
+            activo : 1
+        }
+    });
+
+    if (listar.length == 0) {
+       // res.send("No existen Usuarios");
+       res.json(listar)
+    } else {
+        res.json(listar)
+
+    }
+    
+
+}
+
+exports.listarTodosE = async (req, res) =>{
+
+    const listar = await modeloUsuario.findAll({
+        where: {
+            idtipo: 2,
+        }
+    });
+
+    if (listar.length == 0) {
+       // res.send("No existen Usuarios");
+       res.json(listar)
+    } else {
+        res.json(listar)
+
+    }
+    
+
+}
 
 exports.listarXCorreo = async (req, res) =>{
     const { correo } = req.body;
@@ -56,7 +107,8 @@ exports.listarXCorreo = async (req, res) =>{
     });
 
     if (listar.length == 0) {
-        res.send("No existen Usuarios");
+       // res.send("No existen Usuarios");
+       res.json(listar)
     } else {
         res.json(listar)
 
@@ -109,13 +161,13 @@ exports.registrarse = async (req, res) =>{
 
 exports.registrarE = async (req, res) =>{
     const validacion = validationResult(req);
-    const {correo, contrasena, nombre, apellido, telefono, idtipo} = req.body;
+    const {correo, contrasena, nombre, apellido, telefono} = req.body;
     if(!validacion.isEmpty){
         console.log(validacion.array());
         msj("Porfavor revise los datos", 200, array.validacion() , res);
     }else{
 
-    if(!correo || !contrasena || !nombre || !apellido || !telefono || !idtipo ){
+    if(!correo || !contrasena || !nombre || !apellido || !telefono ){
         msj("Los datos ingresados No son Válidos", 200, [] , res);
     }else{
         
@@ -133,7 +185,7 @@ exports.registrarE = async (req, res) =>{
             nombre: nombre,
             apellido: apellido,
             telefono: telefono,
-            idtipo: idtipo
+            idtipo: 2
         })
         .then((data) => {
             console.log(data.contrasena);
@@ -153,10 +205,7 @@ exports.registrarE = async (req, res) =>{
 
 exports.modificarContraseña = async (req, res) => {
     const { id } = req.query;
-    const { contrasena } = req.body;
-
-    const data = controladorA.data;
-    console.log(data)
+    const { contrasena, correo, nombre, apellido, telefono, activo } = req.body;
 
     const validacion = validationResult(req);
 
@@ -164,21 +213,24 @@ exports.modificarContraseña = async (req, res) => {
         res.send("Porfavor revise los datos");
         console.log(validacion.array());
     } else {
-        if (!id || !contrasena) {
+        if (!id || !contrasena || !correo || !nombre || !apellido || !telefono || !activo) {
             res.send("Envie los datos obligatorios")
         } else {
             var buscarUsuario = await modeloUsuario.findOne({
                 where: {
-                    id: id,
-                    activo: true
+                    id: id
                 }
             })
             if (!buscarUsuario) {
                 res.send("El usuario no existe o está inactivo");
             }
             else {
-
+                buscarUsuario.correo = correo;
+                buscarUsuario.nombre = nombre;
+                buscarUsuario.apellido = apellido;
                 buscarUsuario.contrasena = contrasena;
+                buscarUsuario.activo = activo;
+                buscarUsuario.idtipo = 2;
 
                 await buscarUsuario.save()
                     .then((data) => {

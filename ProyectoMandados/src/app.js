@@ -14,6 +14,7 @@ app.set('json spaces', 2);
 app.use('/tienda/img', express.static(path.join(__dirname, 'public/img')));
 app.use('/producto/imgP',express.static(path.join(__dirname,'public/imgP')));
 app.use('/usuario/imgU',express.static(path.join(__dirname,'public/imgU')));
+app.use('/categorias/imgC',express.static(path.join(__dirname,'public/imgC')));
 
 app.use('/api/autenticacion/', require('./rutas/rutaAutenticacion'))
 app.use('/api/usuarios/', require('./rutas/routeUsuario'));
@@ -24,6 +25,7 @@ app.use('/api/detalle/', require('./rutas/rutasDetalle'));
 app.use('/api/productos/', require('./rutas/rutasProductos'));
 app.use('/api/archivosP/', require('./rutas/rutasArchivosP'));
 app.use('/api/archivosU/', require('./rutas/rutasArcuivosU'));
+app.use('/api/archivosC/', require('./rutas/rutasArchivosC'));
 app.use('/api/categorias/', require('./rutas/rutasCategorias'));
 
 app.listen(5000, ()=>{

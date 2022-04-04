@@ -5,7 +5,7 @@ const modeloUsuario = require('../modelos/modelUsuario');
 
 
 exports.Recibir = async (req, res) => {
-    const { filename } = req.file;
+    const { filename } = req.body;
     const { id } = req.query;
     console.log(id);
     var BuscarUsuario = await modeloUsuario.findOne({
